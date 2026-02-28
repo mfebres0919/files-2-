@@ -18,7 +18,7 @@ a{text-decoration:none;color:inherit}
 }
 body{font-family:'DM Sans',sans-serif;background:var(--dark);color:#fff;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 
-/* UTILITIES */
+/* ── UTILITIES ── */
 .tag{display:inline-flex;align-items:center;gap:8px;font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:12px}
 .tag::before{content:'';width:20px;height:1px;background:var(--gold);flex-shrink:0}
 .display{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,6vw,3.8rem);font-weight:300;line-height:1.1}
@@ -31,7 +31,144 @@ body{font-family:'DM Sans',sans-serif;background:var(--dark);color:#fff;overflow
 .btn-outline{border:1.5px solid rgba(255,255,255,.3);color:#fff;background:transparent}
 .btn-outline:hover{border-color:var(--gold);color:var(--gold-lt)}
 
-/* NAV */
+/* ══════════════════════════════════════
+   PREMIUM: PAGE LOADER
+══════════════════════════════════════ */
+.page-loader{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--dark);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
+  transition:opacity .6s ease, visibility .6s ease;
+}
+.page-loader.done{opacity:0;visibility:hidden}
+.loader-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.8rem,5vw,2.8rem);
+  font-weight:300;letter-spacing:.2em;
+  color:var(--gold-lt);
+  animation:loaderPulse 1.5s ease infinite;
+}
+.loader-logo em{font-style:italic;color:var(--gold)}
+.loader-bar-wrap{width:120px;height:1px;background:rgba(201,149,60,.15);border-radius:2px;overflow:hidden}
+.loader-bar{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-lt));width:0;animation:loaderFill 1.2s ease forwards}
+@keyframes loaderFill{to{width:100%}}
+@keyframes loaderPulse{0%,100%{opacity:.6}50%{opacity:1}}
+
+/* ══════════════════════════════════════
+   PREMIUM: EMAIL POPUP
+══════════════════════════════════════ */
+.email-popup{
+  position:fixed;inset:0;z-index:800;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+  background:rgba(8,4,2,.88);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  opacity:0;visibility:hidden;
+  transition:opacity .5s ease, visibility .5s ease;
+}
+.email-popup.show{opacity:1;visibility:visible}
+.ep-card{
+  position:relative;
+  width:100%;max-width:500px;
+  background:var(--dark2);
+  border-radius:24px;
+  border:1px solid rgba(201,149,60,.2);
+  box-shadow:0 32px 80px rgba(0,0,0,.7);
+  overflow:hidden;
+  transform:translateY(30px) scale(.96);
+  transition:transform .5s cubic-bezier(.4,0,.2,1);
+}
+.email-popup.show .ep-card{transform:translateY(0) scale(1)}
+.ep-img{
+  position:relative;height:200px;overflow:hidden;
+}
+.ep-img img{width:100%;height:100%;object-fit:cover;object-position:top center}
+.ep-img-veil{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,var(--dark2) 0%,rgba(30,16,8,.4) 60%,transparent 100%);
+}
+.ep-badge{
+  position:absolute;top:16px;left:16px;
+  background:var(--gold);
+  color:var(--dark);
+  font-size:.55rem;letter-spacing:.28em;text-transform:uppercase;font-weight:700;
+  padding:5px 14px;border-radius:100px;
+}
+.ep-body{padding:28px 32px 32px}
+.ep-tag{font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px}
+.ep-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.6rem,4vw,2.2rem);font-weight:300;line-height:1.15;
+  margin-bottom:10px;
+}
+.ep-title em{font-style:italic;color:var(--gold-lt)}
+.ep-desc{font-size:.8rem;line-height:1.8;color:rgba(255,255,255,.5);margin-bottom:22px}
+.ep-form{display:flex;gap:10px;flex-wrap:wrap}
+.ep-input{
+  flex:1;min-width:180px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:100px;
+  padding:12px 20px;
+  color:#fff;font-family:'DM Sans',sans-serif;font-size:.8rem;
+  outline:none;transition:border-color .25s;
+}
+.ep-input::placeholder{color:rgba(255,255,255,.3)}
+.ep-input:focus{border-color:var(--gold)}
+.ep-submit{
+  background:linear-gradient(135deg,var(--gold),var(--brown));
+  color:#fff;border:none;border-radius:100px;
+  padding:12px 24px;font-size:.62rem;letter-spacing:.18em;
+  text-transform:uppercase;font-weight:600;cursor:pointer;
+  white-space:nowrap;transition:transform .25s,box-shadow .25s;
+  box-shadow:0 4px 16px rgba(201,149,60,.35);
+}
+.ep-submit:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,149,60,.5)}
+.ep-skip{
+  display:block;text-align:center;margin-top:14px;
+  font-size:.62rem;color:rgba(255,255,255,.3);
+  cursor:pointer;letter-spacing:.1em;transition:color .25s;
+}
+.ep-skip:hover{color:rgba(255,255,255,.6)}
+.ep-close-btn{
+  position:absolute;top:14px;right:14px;
+  width:30px;height:30px;border-radius:50%;
+  background:rgba(18,10,4,.6);
+  border:1px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.5);
+  font-size:.85rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .25s;z-index:1;
+}
+.ep-close-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ══════════════════════════════════════
+   PREMIUM: FLOATING BOOK BUTTON
+══════════════════════════════════════ */
+.float-book{
+  position:fixed;bottom:28px;right:28px;z-index:190;
+  display:flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,var(--gold),var(--brown));
+  color:#fff;border:none;border-radius:100px;
+  padding:14px 24px;
+  font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;
+  cursor:pointer;
+  box-shadow:0 8px 32px rgba(201,149,60,.5);
+  transition:transform .3s,box-shadow .3s,opacity .3s;
+  opacity:0;transform:translateY(20px);
+  font-family:'DM Sans',sans-serif;
+  -webkit-tap-highlight-color:transparent;
+}
+.float-book.visible{opacity:1;transform:translateY(0)}
+.float-book:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(201,149,60,.6)}
+.float-book-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:#fff;opacity:.8;
+  animation:blink 2s ease infinite;
+}
+@media(max-width:400px){.float-book span{display:none}.float-book{padding:14px 18px}}
+
+/* ── NAV ── */
 nav{position:fixed;inset:0 0 auto 0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:15px var(--pad);background:rgba(18,10,4,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(201,149,60,.12);transition:background .4s;gap:14px}
 nav.solid{background:rgba(18,10,4,.97)}
 .nav-logo{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,3.5vw,1.5rem);font-weight:300;letter-spacing:.14em;color:var(--gold-lt);white-space:nowrap;flex-shrink:0}
@@ -54,7 +191,7 @@ nav.solid{background:rgba(18,10,4,.97)}
 .mobile-menu a:hover{color:var(--gold-lt)}
 @media(min-width:860px){.nav-links{display:flex}.nav-book-btn{display:flex}.ham{display:none}}
 
-/* HERO */
+/* ── HERO ── */
 .hero{position:relative;min-height:100vh;display:flex;align-items:flex-end;overflow:hidden}
 .hero-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;animation:zoomIn 1.4s ease forwards}
 @keyframes zoomIn{from{transform:scale(1.06)}to{transform:scale(1)}}
@@ -72,14 +209,14 @@ nav.solid{background:rgba(18,10,4,.97)}
 .stat-n{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,4vw,2.4rem);font-weight:300;color:var(--gold-lt);line-height:1}
 .stat-l{font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-top:4px}
 
-/* TICKER */
+/* ── TICKER ── */
 .ticker{background:var(--gold);overflow:hidden;padding:11px 0;white-space:nowrap}
 .ticker-track{display:inline-flex;animation:tick 22s linear infinite}
 .ticker-track span{font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;font-weight:700;color:var(--dark);padding:0 28px}
 .ticker-track .sep{color:var(--brown);font-size:.9rem;vertical-align:middle}
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* SERVICES */
+/* ── SERVICES ── */
 .services{background:var(--cream);padding:clamp(56px,10vw,120px) var(--pad)}
 .svc-head{display:flex;flex-direction:column;gap:18px;margin-bottom:clamp(36px,6vw,60px)}
 .svc-head-sub{font-size:.8rem;line-height:1.8;color:rgba(44,26,14,.52);max-width:280px}
@@ -101,7 +238,7 @@ nav.solid{background:rgba(18,10,4,.97)}
 .svc-book-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,149,60,.5)}
 .svc-cta{text-align:center;margin-top:44px}
 
-/* GALLERY */
+/* ── GALLERY ── */
 .gallery{background:var(--dark2);padding:clamp(56px,10vw,120px) var(--pad)}
 .gal-head{margin-bottom:clamp(28px,5vw,52px)}
 .gal-grid{display:grid;gap:10px;grid-template-columns:repeat(2,1fr)}
@@ -116,7 +253,7 @@ nav.solid{background:rgba(18,10,4,.97)}
 .gal-plus{font-family:'Cormorant Garamond',serif;font-size:2.4rem;color:var(--gold-lt);opacity:0;transform:scale(.7);transition:opacity .35s,transform .35s}
 .gal-item:hover .gal-plus{opacity:1;transform:scale(1)}
 
-/* CTA BANNER */
+/* ── CTA BANNER ── */
 .cta-section{background:var(--dark2);padding:0 var(--pad) clamp(56px,10vw,100px)}
 .cta-box{position:relative;overflow:hidden;border-radius:22px;background:linear-gradient(135deg,var(--dark3) 0%,var(--brown-dk) 100%);padding:clamp(36px,7vw,68px) clamp(24px,6vw,68px);display:flex;flex-direction:column;gap:24px}
 @media(min-width:680px){.cta-box{flex-direction:row;align-items:center;justify-content:space-between}}
@@ -126,7 +263,7 @@ nav.solid{background:rgba(18,10,4,.97)}
 .cta-box p{font-size:.8rem;color:rgba(255,255,255,.5);line-height:1.8;margin-top:10px;max-width:340px}
 .cta-actions{flex-shrink:0;position:relative;z-index:1}
 
-/* TESTIMONIALS */
+/* ── TESTIMONIALS ── */
 .testimonials{background:var(--dark);padding:clamp(56px,10vw,120px) var(--pad)}
 .test-head{margin-bottom:clamp(28px,5vw,52px)}
 .test-wrap{position:relative;overflow:hidden}
@@ -144,7 +281,7 @@ nav.solid{background:rgba(18,10,4,.97)}
 .t-btn{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.15);background:transparent;color:#fff;font-size:.95rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .25s,background .25s,color .25s;-webkit-tap-highlight-color:transparent}
 .t-btn:hover,.t-btn.lit{border-color:var(--gold);background:rgba(201,149,60,.1);color:var(--gold)}
 
-/* CONTACT */
+/* ── CONTACT ── */
 .contact{background:linear-gradient(160deg,var(--dark3) 0%,var(--dark) 100%);padding:clamp(56px,10vw,120px) var(--pad)}
 .contact-grid{display:grid;grid-template-columns:1fr;gap:clamp(40px,7vw,80px)}
 @media(min-width:780px){.contact-grid{grid-template-columns:1fr 1fr}}
@@ -160,7 +297,7 @@ nav.solid{background:rgba(18,10,4,.97)}
 .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold);background:rgba(201,149,60,.05)}
 .field textarea{resize:none;height:115px}
 
-/* POLICIES */
+/* ── POLICIES ── */
 .policies{background:var(--cream);padding:clamp(56px,10vw,100px) var(--pad)}
 .pol-inner{display:grid;grid-template-columns:1fr;gap:36px;background:#fff;border-radius:22px;padding:clamp(26px,6vw,52px);box-shadow:0 16px 56px rgba(44,26,14,.08)}
 @media(min-width:660px){.pol-inner{grid-template-columns:1fr 1.4fr;gap:52px}}
@@ -170,7 +307,7 @@ nav.solid{background:rgba(18,10,4,.97)}
 .pol-item{display:flex;align-items:flex-start;gap:11px;font-size:.8rem;color:rgba(44,26,14,.68);line-height:1.6}
 .pol-check{width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--brown));display:flex;align-items:center;justify-content:center;font-size:.52rem;color:#fff;flex-shrink:0;margin-top:2px}
 
-/* FOOTER */
+/* ── FOOTER ── */
 footer{background:var(--dark3);padding:clamp(44px,8vw,80px) var(--pad) clamp(22px,4vw,38px);border-top:1px solid rgba(201,149,60,.1)}
 .foot-grid{display:grid;grid-template-columns:1fr 1fr;gap:36px 20px;margin-bottom:44px}
 @media(min-width:660px){.foot-grid{grid-template-columns:1.5fr repeat(3,1fr)}}
@@ -195,7 +332,7 @@ footer{background:var(--dark3);padding:clamp(44px,8vw,80px) var(--pad) clamp(22p
 .soc-btn{width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:.68rem;color:rgba(255,255,255,.42);transition:border-color .25s,color .25s;-webkit-tap-highlight-color:transparent}
 .soc-btn:hover{border-color:var(--gold);color:var(--gold)}
 
-/* GALLERY LIGHTBOX */
+/* ── GALLERY LIGHTBOX ── */
 .lightbox{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s;padding:20px}
 .lightbox.open{opacity:1;pointer-events:all}
 .lb-img{max-width:min(88vw,560px);max-height:86vh;border-radius:14px;object-fit:contain;transform:scale(.92);transition:transform .4s cubic-bezier(.4,0,.2,1)}
@@ -203,7 +340,7 @@ footer{background:var(--dark3);padding:clamp(44px,8vw,80px) var(--pad) clamp(22p
 .lb-close{position:absolute;top:18px;right:22px;font-size:1.5rem;color:rgba(255,255,255,.5);cursor:pointer;line-height:1;transition:color .25s;background:none;border:none;-webkit-tap-highlight-color:transparent}
 .lb-close:hover{color:var(--gold)}
 
-/* BOOKING MODAL */
+/* ── BOOKING MODAL ── */
 .bm-overlay{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(8,4,2,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);opacity:0;pointer-events:none;transition:opacity .35s ease}
 .bm-overlay.open{opacity:1;pointer-events:all}
 .bm-panel{position:relative;width:100%;max-width:840px;height:min(88vh,680px);background:var(--dark2);border-radius:24px;border:1px solid rgba(201,149,60,.2);box-shadow:0 32px 80px rgba(0,0,0,.7);display:flex;flex-direction:column;overflow:hidden;transform:translateY(28px) scale(.97);transition:transform .4s cubic-bezier(.4,0,.2,1)}
@@ -225,20 +362,51 @@ footer{background:var(--dark3);padding:clamp(44px,8vw,80px) var(--pad) clamp(22p
 .bm-foot{padding:10px 22px;border-top:1px solid rgba(201,149,60,.08);display:flex;align-items:center;justify-content:center;gap:8px;flex-shrink:0;background:rgba(18,10,4,.3)}
 .bm-foot p{font-size:.56rem;letter-spacing:.1em;color:rgba(255,255,255,.2);text-align:center}
 .bm-foot span{color:var(--gold);font-size:.6rem}
-
-.color-brown{color:var(--brown)}
-
 </style>
 </head>
 <body>
 
-<!-- LIGHTBOX -->
+<!-- ══ PAGE LOADER ══ -->
+<div class="page-loader" id="pageLoader">
+  <div class="loader-logo">Flawless<em>Wig</em> Studio</div>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+</div>
+
+<!-- ══ EMAIL POPUP ══ -->
+<div class="email-popup" id="emailPopup">
+  <div class="ep-card">
+    <button class="ep-close-btn" id="epClose">&#x2715;</button>
+    <div class="ep-img">
+      <img src="img2.jpeg" alt="Flawless install">
+      <div class="ep-img-veil"></div>
+      <div class="ep-badge">Members Only</div>
+    </div>
+    <div class="ep-body">
+      <div class="ep-tag">Join the VIP List</div>
+      <h2 class="ep-title">Get <em>10% Off</em><br>Your First Install</h2>
+      <p class="ep-desc">Sign up for exclusive early booking access, VIP offers, and style inspo delivered straight to your inbox.</p>
+      <div class="ep-form">
+        <input class="ep-input" type="email" id="epEmail" placeholder="Enter your email address...">
+        <button class="ep-submit" id="epSubmit">Claim Offer</button>
+      </div>
+      <span class="ep-skip" id="epSkip">No thanks, I'll pay full price</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FLOATING BOOK BUTTON ══ -->
+<button class="float-book" id="floatBook">
+  <div class="float-book-dot"></div>
+  <span>Book Now</span>
+</button>
+
+<!-- ══ LIGHTBOX ══ -->
 <div class="lightbox" id="lb">
   <button class="lb-close" id="lbClose">&#x2715;</button>
   <img class="lb-img" id="lbImg" src="" alt="">
 </div>
 
-<!-- BOOKING MODAL -->
+<!-- ══ BOOKING MODAL ══ -->
 <div class="bm-overlay" id="bmOverlay">
   <div class="bm-panel">
     <div class="bm-header">
@@ -264,7 +432,7 @@ footer{background:var(--dark3);padding:clamp(44px,8vw,80px) var(--pad) clamp(22p
   </div>
 </div>
 
-<!-- MOBILE MENU -->
+<!-- ══ MOBILE MENU ══ -->
 <div class="mobile-menu" id="mobileMenu">
   <a href="#services" class="mm-link">Services</a>
   <a href="#gallery" class="mm-link">Gallery</a>
@@ -273,7 +441,7 @@ footer{background:var(--dark3);padding:clamp(44px,8vw,80px) var(--pad) clamp(22p
   <button class="btn btn-gold" id="mobileBookBtn">Book Now</button>
 </div>
 
-<!-- NAV -->
+<!-- ══ NAV ══ -->
 <nav id="nav">
   <div class="nav-logo">Flawless<em>Wig</em> Studio</div>
   <ul class="nav-links">
@@ -286,7 +454,7 @@ footer{background:var(--dark3);padding:clamp(44px,8vw,80px) var(--pad) clamp(22p
   <div class="ham" id="ham"><span></span><span></span><span></span></div>
 </nav>
 
-<!-- HERO -->
+<!-- ══ HERO ══ -->
 <section class="hero">
   <img class="hero-bg-img" src="img4.jpeg" alt="Flawless wig install">
   <div class="hero-veil"></div>
@@ -300,13 +468,13 @@ footer{background:var(--dark3);padding:clamp(44px,8vw,80px) var(--pad) clamp(22p
     </div>
     <div class="hero-stats">
       <div><div class="stat-n">500+</div><div class="stat-l">Happy Clients</div></div>
-      <div><div class="stat-n">5&#x2605;</div><div class="stat-l">Avg. Rating</div></div>
+      <div><div class="stat-n">5&#9733;</div><div class="stat-l">Avg. Rating</div></div>
       <div><div class="stat-n">4 Yrs</div><div class="stat-l">Experience</div></div>
     </div>
   </div>
 </section>
 
-<!-- TICKER -->
+<!-- ══ TICKER ══ -->
 <div class="ticker" aria-hidden="true">
   <div class="ticker-track">
     <span>Frontal Wig Install</span><span class="sep">&#x2726;</span>
@@ -326,12 +494,12 @@ footer{background:var(--dark3);padding:clamp(44px,8vw,80px) var(--pad) clamp(22p
   </div>
 </div>
 
-<!-- SERVICES -->
+<!-- ══ SERVICES ══ -->
 <section class="services" id="services">
   <div class="svc-head">
     <div>
       <div class="tag">What We Offer</div>
-      <h2 class="display on-light color-brown">Wig &amp; Install<br><em>Services</em></h2>
+      <h2 class="display on-light">Wig &amp; Install<br><em>Services</em></h2>
     </div>
     <p class="svc-head-sub">From seamless lace melts to full wig revamps — every service tailored perfectly to you.</p>
   </div>
@@ -372,7 +540,7 @@ footer{background:var(--dark3);padding:clamp(44px,8vw,80px) var(--pad) clamp(22p
   </div>
 </section>
 
-<!-- GALLERY -->
+<!-- ══ GALLERY ══ -->
 <section class="gallery" id="gallery">
   <div class="gal-head">
     <div class="tag">Portfolio</div>
@@ -389,7 +557,7 @@ footer{background:var(--dark3);padding:clamp(44px,8vw,80px) var(--pad) clamp(22p
   </div>
 </section>
 
-<!-- CTA BANNER -->
+<!-- ══ CTA BANNER ══ -->
 <div class="cta-section">
   <div class="cta-box">
     <div>
@@ -402,7 +570,7 @@ footer{background:var(--dark3);padding:clamp(44px,8vw,80px) var(--pad) clamp(22p
   </div>
 </div>
 
-<!-- TESTIMONIALS -->
+<!-- ══ TESTIMONIALS ══ -->
 <section class="testimonials" id="testimonials">
   <div class="test-head">
     <div class="tag">Client Love</div>
@@ -412,37 +580,37 @@ footer{background:var(--dark3);padding:clamp(44px,8vw,80px) var(--pad) clamp(22p
     <div class="test-track" id="tTrack">
       <div class="t-card">
         <div class="t-quote">"</div>
-        <div class="t-stars">&#x2605;&#x2605;&#x2605;&#x2605;&#x2605;</div>
+        <div class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
         <p class="t-text">"I've had my fair share of wig installs, but this experience was on a completely different level. My lace was perfectly melted — the hairline looked completely natural, and the fit was so secure yet comfortable."</p>
         <div class="t-author"><img class="t-img" src="img8.jpeg" alt="Sarah M"><div><div class="t-name">Sarah M.</div><div class="t-role">Custom Wig Styling</div></div></div>
       </div>
       <div class="t-card">
         <div class="t-quote">"</div>
-        <div class="t-stars">&#x2605;&#x2605;&#x2605;&#x2605;&#x2605;</div>
+        <div class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
         <p class="t-text">"Best wig install I've ever had! She literally transformed my whole look. The lace was undetectable and everyone thought it was my real hair. I've already booked my next appointment!"</p>
         <div class="t-author"><img class="t-img" src="img3.jpeg" alt="Jasmine T"><div><div class="t-name">Jasmine T.</div><div class="t-role">Frontal Install</div></div></div>
       </div>
       <div class="t-card">
         <div class="t-quote">"</div>
-        <div class="t-stars">&#x2605;&#x2605;&#x2605;&#x2605;&#x2605;</div>
+        <div class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
         <p class="t-text">"I came in for a wig revamp and left looking like a whole new woman. She breathed new life into my old wig — styled it, cut it, and installed it flawlessly. The attention to detail is unmatched."</p>
         <div class="t-author"><img class="t-img" src="img5.jpeg" alt="Destiny R"><div><div class="t-name">Destiny R.</div><div class="t-role">Wig Revamp</div></div></div>
       </div>
       <div class="t-card">
         <div class="t-quote">"</div>
-        <div class="t-stars">&#x2605;&#x2605;&#x2605;&#x2605;&#x2605;</div>
+        <div class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
         <p class="t-text">"She did my closure install and I am OBSESSED. My lace laid so naturally, I almost cried. The vibe in the studio is so welcoming and she really takes her time to make sure everything is perfect. 10/10!"</p>
         <div class="t-author"><img class="t-img" src="img2.jpeg" alt="Kezia B"><div><div class="t-name">Kezia B.</div><div class="t-role">Closure Install</div></div></div>
       </div>
     </div>
   </div>
   <div class="test-controls">
-    <button class="t-btn" id="tPrev">&#x2190;</button>
-    <button class="t-btn lit" id="tNext">&#x2192;</button>
+    <button class="t-btn" id="tPrev">&#8592;</button>
+    <button class="t-btn lit" id="tNext">&#8594;</button>
   </div>
 </section>
 
-<!-- CONTACT -->
+<!-- ══ CONTACT ══ -->
 <section class="contact" id="contact">
   <div class="contact-grid">
     <div>
@@ -450,9 +618,9 @@ footer{background:var(--dark3);padding:clamp(44px,8vw,80px) var(--pad) clamp(22p
       <h2 class="display">Contact<br><em>Us</em></h2>
       <p style="font-size:.8rem;line-height:1.85;color:rgba(255,255,255,.48);margin-top:14px;">Ready for your next flawless install? Fill out the form and we'll confirm your appointment.</p>
       <div class="contact-info">
-        <div class="c-row"><div class="c-ico">&#x2709;</div>info@flawlesswigstudio.com</div>
-        <div class="c-row"><div class="c-ico">&#x260E;</div>(877) 297-5454</div>
-        <div class="c-row"><div class="c-ico">&#x1F4CD;</div>6391 Elgin Celina, Delaware</div>
+        <div class="c-row"><div class="c-ico">&#9993;</div>info@flawlesswigstudio.com</div>
+        <div class="c-row"><div class="c-ico">&#9742;</div>(877) 297-5454</div>
+        <div class="c-row"><div class="c-ico">&#9679;</div>6391 Elgin Celina, Delaware</div>
       </div>
     </div>
     <div class="contact-form">
@@ -462,9 +630,9 @@ footer{background:var(--dark3);padding:clamp(44px,8vw,80px) var(--pad) clamp(22p
         <label>Service</label>
         <select>
           <option value="" disabled selected>Select a service</option>
-          <option>Frontal Wig Install &#x2014; $170</option>
-          <option>Closure Install &#x2014; $150</option>
-          <option>Wig Revamp &#x2014; $190</option>
+          <option>Frontal Wig Install &mdash; $170</option>
+          <option>Closure Install &mdash; $150</option>
+          <option>Wig Revamp &mdash; $190</option>
           <option>Custom Styling</option>
         </select>
       </div>
@@ -474,7 +642,7 @@ footer{background:var(--dark3);padding:clamp(44px,8vw,80px) var(--pad) clamp(22p
   </div>
 </section>
 
-<!-- POLICIES -->
+<!-- ══ POLICIES ══ -->
 <section class="policies" id="policies">
   <div class="pol-inner">
     <div class="pol-img"><img src="img9.jpeg" alt="Studio policies"></div>
@@ -482,9 +650,9 @@ footer{background:var(--dark3);padding:clamp(44px,8vw,80px) var(--pad) clamp(22p
       <div class="tag" style="color:var(--brown)">Before You Come In</div>
       <h2 class="display on-light">Quick<br><em>Policies</em></h2>
       <div class="pol-list">
-        <div class="pol-item"><div class="pol-check">&#x2713;</div>$25 deposit required to confirm &#x2014; non-refundable</div>
+        <div class="pol-item"><div class="pol-check">&#x2713;</div>$25 deposit required to confirm &mdash; non-refundable</div>
         <div class="pol-item"><div class="pol-check">&#x2713;</div>Cancel or reschedule at least 24 hours in advance</div>
-        <div class="pol-item"><div class="pol-check">&#x2713;</div>10 minute grace period &#x2014; late arrivals may be cancelled</div>
+        <div class="pol-item"><div class="pol-check">&#x2713;</div>10 minute grace period &mdash; late arrivals may be cancelled</div>
         <div class="pol-item"><div class="pol-check">&#x2713;</div>Please arrive with inspiration photos ready</div>
         <div class="pol-item"><div class="pol-check">&#x2713;</div>No extra guests unless previously approved</div>
       </div>
@@ -493,7 +661,7 @@ footer{background:var(--dark3);padding:clamp(44px,8vw,80px) var(--pad) clamp(22p
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ══ FOOTER ══ -->
 <footer>
   <div class="foot-grid">
     <div class="foot-brand">
@@ -518,7 +686,7 @@ footer{background:var(--dark3);padding:clamp(44px,8vw,80px) var(--pad) clamp(22p
     </div>
   </div>
   <div class="foot-bottom">
-    <span class="foot-copy">&#169; 2026 Flawless Wig Studio. All rights reserved.</span>
+    <span class="foot-copy">&copy; 2026 Flawless Wig Studio. All rights reserved.</span>
     <div class="socials">
       <a href="#" class="soc-btn">ig</a>
       <a href="#" class="soc-btn">tw</a>
@@ -529,10 +697,68 @@ footer{background:var(--dark3);padding:clamp(44px,8vw,80px) var(--pad) clamp(22p
 </footer>
 
 <script>
-// =============================================
+// ============================================
+// PAGE LOADER
+// ============================================
+window.addEventListener('load', function() {
+  setTimeout(function() {
+    document.getElementById('pageLoader').classList.add('done');
+    // Show email popup after loader finishes (2s delay)
+    setTimeout(showEmailPopup, 2000);
+  }, 1400);
+});
+
+// ============================================
+// EMAIL POPUP
+// ============================================
+var emailPopup = document.getElementById('emailPopup');
+
+function showEmailPopup() {
+  // Only show if user hasn't dismissed it this session
+  if (sessionStorage.getItem('ep_dismissed')) return;
+  emailPopup.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function hideEmailPopup() {
+  emailPopup.classList.remove('show');
+  document.body.style.overflow = '';
+  sessionStorage.setItem('ep_dismissed', '1');
+}
+
+document.getElementById('epClose').addEventListener('click', hideEmailPopup);
+document.getElementById('epSkip').addEventListener('click', hideEmailPopup);
+emailPopup.addEventListener('click', function(e) {
+  if (e.target === emailPopup) hideEmailPopup();
+});
+
+document.getElementById('epSubmit').addEventListener('click', function() {
+  var email = document.getElementById('epEmail').value.trim();
+  if (!email || !email.includes('@')) {
+    document.getElementById('epEmail').style.borderColor = '#e05';
+    return;
+  }
+  // Success state
+  var body = document.querySelector('.ep-body');
+  body.innerHTML = '<div style="text-align:center;padding:20px 0"><div style="font-family:Cormorant Garamond,serif;font-size:3rem;color:var(--gold-lt);margin-bottom:12px">&#10003;</div><div style="font-family:Cormorant Garamond,serif;font-size:1.6rem;font-weight:300;margin-bottom:10px">You\'re on the list!</div><p style="font-size:.82rem;color:rgba(255,255,255,.5);line-height:1.8">Your 10% discount code will be sent to <strong style="color:var(--gold-lt)">' + email + '</strong> shortly.</p><button onclick="hideEmailPopup()" style="margin-top:22px;display:inline-flex;align-items:center;padding:11px 28px;border-radius:100px;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;background:linear-gradient(135deg,var(--gold),var(--brown));color:#fff;border:none;cursor:pointer;">Continue to Site</button></div>';
+  setTimeout(hideEmailPopup, 4000);
+});
+
+// ============================================
+// FLOATING BOOK BUTTON
+// ============================================
+var floatBook = document.getElementById('floatBook');
+window.addEventListener('scroll', function() {
+  floatBook.classList.toggle('visible', window.scrollY > 400);
+});
+floatBook.addEventListener('click', function() {
+  openBooking('General');
+});
+
+// ============================================
 // BOOKING MODAL
-// =============================================
-// When your Acuity subscription is back, replace this URL:
+// ============================================
+// Replace with your real Acuity URL when subscription is back:
 var ACUITY_URL = 'https://acuityscheduling.com/schedule.php?owner=33887867';
 
 var bmOverlay  = document.getElementById('bmOverlay');
@@ -551,12 +777,8 @@ function openBooking(service) {
   bmIframe.src = '';
   bmOverlay.classList.add('open');
   document.body.style.overflow = 'hidden';
-  setTimeout(function() {
-    bmIframe.src = url;
-  }, 100);
-  bmIframe.onload = function() {
-    bmLoader.classList.add('gone');
-  };
+  setTimeout(function() { bmIframe.src = url; }, 100);
+  bmIframe.onload = function() { bmLoader.classList.add('gone'); };
 }
 
 function closeBooking() {
@@ -566,80 +788,33 @@ function closeBooking() {
 }
 
 bmCloseBtn.addEventListener('click', closeBooking);
-bmOverlay.addEventListener('click', function(e) {
-  if (e.target === bmOverlay) closeBooking();
-});
+bmOverlay.addEventListener('click', function(e) { if (e.target === bmOverlay) closeBooking(); });
 
-// Nav Book Now
-document.getElementById('navBookBtn').addEventListener('click', function() {
-  openBooking('General');
-});
-
-// Mobile menu Book Now
+document.getElementById('navBookBtn').addEventListener('click', function() { openBooking('General'); });
 document.getElementById('mobileBookBtn').addEventListener('click', function() {
   document.getElementById('mobileMenu').classList.remove('open');
   document.getElementById('ham').classList.remove('open');
   document.body.style.overflow = '';
   openBooking('General');
 });
+document.getElementById('heroBookBtn').addEventListener('click', function() { openBooking('General'); });
+document.getElementById('svcCtaBtn').addEventListener('click', function() { openBooking('General'); });
+document.getElementById('ctaBannerBtn').addEventListener('click', function() { openBooking('General'); });
+document.getElementById('polBookBtn').addEventListener('click', function() { openBooking('General'); });
 
-// Hero Book Now
-document.getElementById('heroBookBtn').addEventListener('click', function() {
-  openBooking('General');
-});
+document.getElementById('svcBtn1').addEventListener('click', function(e) { e.stopPropagation(); openBooking('Frontal Wig Install'); });
+document.getElementById('svcBtn2').addEventListener('click', function(e) { e.stopPropagation(); openBooking('Closure Install'); });
+document.getElementById('svcBtn3').addEventListener('click', function(e) { e.stopPropagation(); openBooking('Wig Revamp'); });
 
-// Services CTA
-document.getElementById('svcCtaBtn').addEventListener('click', function() {
-  openBooking('General');
-});
+document.getElementById('svcCard1').addEventListener('click', function() { openBooking('Frontal Wig Install'); });
+document.getElementById('svcCard2').addEventListener('click', function() { openBooking('Closure Install'); });
+document.getElementById('svcCard3').addEventListener('click', function() { openBooking('Wig Revamp'); });
 
-// CTA Banner
-document.getElementById('ctaBannerBtn').addEventListener('click', function() {
-  openBooking('General');
-});
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeBooking(); });
 
-// Policies
-document.getElementById('polBookBtn').addEventListener('click', function() {
-  openBooking('General');
-});
-
-// Service card 1 inner button
-document.getElementById('svcBtn1').addEventListener('click', function(e) {
-  e.stopPropagation();
-  openBooking('Frontal Wig Install');
-});
-
-// Service card 2 inner button
-document.getElementById('svcBtn2').addEventListener('click', function(e) {
-  e.stopPropagation();
-  openBooking('Closure Install');
-});
-
-// Service card 3 inner button
-document.getElementById('svcBtn3').addEventListener('click', function(e) {
-  e.stopPropagation();
-  openBooking('Wig Revamp');
-});
-
-// Clicking anywhere on a service card also opens modal
-document.getElementById('svcCard1').addEventListener('click', function() {
-  openBooking('Frontal Wig Install');
-});
-document.getElementById('svcCard2').addEventListener('click', function() {
-  openBooking('Closure Install');
-});
-document.getElementById('svcCard3').addEventListener('click', function() {
-  openBooking('Wig Revamp');
-});
-
-// Escape key closes modal
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeBooking();
-});
-
-// =============================================
+// ============================================
 // NAV
-// =============================================
+// ============================================
 var nav = document.getElementById('nav');
 var ham = document.getElementById('ham');
 var mobileMenu = document.getElementById('mobileMenu');
@@ -647,13 +822,11 @@ var mobileMenu = document.getElementById('mobileMenu');
 window.addEventListener('scroll', function() {
   nav.classList.toggle('solid', window.scrollY > 50);
 });
-
 ham.addEventListener('click', function() {
   ham.classList.toggle('open');
   mobileMenu.classList.toggle('open');
   document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
 });
-
 document.querySelectorAll('.mm-link').forEach(function(a) {
   a.addEventListener('click', function() {
     ham.classList.remove('open');
@@ -662,14 +835,12 @@ document.querySelectorAll('.mm-link').forEach(function(a) {
   });
 });
 
-// =============================================
+// ============================================
 // TESTIMONIAL SLIDER
-// =============================================
+// ============================================
 var track = document.getElementById('tTrack');
 var cur = 0;
-
 function getVis() { return window.innerWidth >= 680 ? 2 : 1; }
-
 function slideTo(n) {
   var cards = track.children;
   var max = cards.length - getVis();
@@ -678,11 +849,9 @@ function slideTo(n) {
   document.getElementById('tPrev').classList.toggle('lit', cur === 0);
   document.getElementById('tNext').classList.toggle('lit', cur < max);
 }
-
 document.getElementById('tNext').addEventListener('click', function() { slideTo(cur + 1); });
 document.getElementById('tPrev').addEventListener('click', function() { slideTo(cur - 1); });
 window.addEventListener('resize', function() { slideTo(0); });
-
 var ts = 0;
 track.addEventListener('touchstart', function(e) { ts = e.touches[0].clientX; }, { passive: true });
 track.addEventListener('touchend', function(e) {
@@ -690,12 +859,11 @@ track.addEventListener('touchend', function(e) {
   if (Math.abs(dx) > 40) slideTo(dx > 0 ? cur + 1 : cur - 1);
 });
 
-// =============================================
+// ============================================
 // GALLERY LIGHTBOX
-// =============================================
+// ============================================
 var lb = document.getElementById('lb');
 var lbImg = document.getElementById('lbImg');
-
 document.querySelectorAll('.gal-item').forEach(function(item) {
   item.addEventListener('click', function() {
     lbImg.src = item.dataset.src;
@@ -703,22 +871,17 @@ document.querySelectorAll('.gal-item').forEach(function(item) {
     document.body.style.overflow = 'hidden';
   });
 });
-
 document.getElementById('lbClose').addEventListener('click', function() {
   lb.classList.remove('open');
   document.body.style.overflow = '';
 });
-
 lb.addEventListener('click', function(e) {
-  if (e.target === lb) {
-    lb.classList.remove('open');
-    document.body.style.overflow = '';
-  }
+  if (e.target === lb) { lb.classList.remove('open'); document.body.style.overflow = ''; }
 });
 
-// =============================================
+// ============================================
 // CUSTOM CURSOR (desktop only)
-// =============================================
+// ============================================
 if (window.matchMedia('(pointer:fine)').matches) {
   var dot = document.createElement('div');
   var ring = document.createElement('div');
