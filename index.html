@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flawless Wig Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+
+/* ══════════════════════════════════════
+   RESET
+══════════════════════════════════════ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+img{display:block;max-width:100%}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+a{text-decoration:none;color:inherit}
+
+:root{
+  --gold:#C9953C;
+  --gold-lt:#E8C07D;
+  --brown:#8B5E3C;
+  --brown-dk:#3D2B1A;
+  --cream:#F7F0E8;
+  --dark:#120A04;
+  --dark2:#1E1008;
+  --dark3:#2A1810;
+  --pad:clamp(18px,5vw,80px);
+}
+
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--dark);
+  color:#fff;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ══════════════════════════════════════
+   UTILITIES
+══════════════════════════════════════ */
+.tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold);font-weight:600;margin-bottom:12px;
+}
+.tag::before{content:'';width:20px;height:1px;background:var(--gold);flex-shrink:0}
+
+.display{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem,6vw,3.8rem);
+  font-weight:300;line-height:1.1;
+}
+.display em{font-style:italic;color:var(--gold-lt)}
+.display.on-light em{color:var(--brown)}
+
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:13px 30px;border-radius:100px;
+  font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;
+  font-weight:600;transition:transform .25s,box-shadow .25s;
+  white-space:nowrap;cursor:pointer;border:none;
+}
+.btn:active{transform:scale(.97)}
+.btn-gold{
+  background:linear-gradient(135deg,var(--gold),var(--brown));
+  color:#fff;box-shadow:0 4px 18px rgba(201,149,60,.35);
+}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,149,60,.5)}
+.btn-outline{border:1.5px solid rgba(255,255,255,.3);color:#fff;background:transparent}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold-lt)}
+
+/* ══════════════════════════════════════
+   NAV
+══════════════════════════════════════ */
+nav{
+  position:fixed;inset:0 0 auto 0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:15px var(--pad);
+  background:rgba(18,10,4,.85);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(201,149,60,.12);
+  transition:background .4s;gap:14px;
+}
+nav.solid{background:rgba(18,10,4,.97)}
+
+.nav-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1rem,3.5vw,1.5rem);font-weight:300;
+  letter-spacing:.14em;color:var(--gold-lt);white-space:nowrap;flex-shrink:0;
+}
+.nav-logo em{font-style:italic;color:var(--gold)}
+
+.nav-links{display:none;list-style:none;gap:clamp(18px,3vw,38px);align-items:center}
+.nav-links a{
+  font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(255,255,255,.6);position:relative;transition:color .25s;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-3px;left:0;right:0;
+  height:1px;background:var(--gold);
+  transform:scaleX(0);transition:transform .3s;transform-origin:right;
+}
+.nav-links a:hover{color:var(--gold-lt)}
+.nav-links a:hover::after{transform:scaleX(1);transform-origin:left}
+
+.nav-book-btn{display:none}
+
+.ham{
+  display:flex;flex-direction:column;gap:5px;
+  width:24px;flex-shrink:0;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.ham span{
+  display:block;height:1.5px;background:var(--gold-lt);
+  border-radius:2px;transition:transform .3s,opacity .3s;
+}
+.ham span:nth-child(2){width:70%}
+.ham.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.ham.open span:nth-child(2){opacity:0;width:100%}
+.ham.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+.mobile-menu{
+  position:fixed;inset:0;z-index:199;
+  background:var(--dark2);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:36px;
+  transform:translateX(100%);transition:transform .45s cubic-bezier(.4,0,.2,1);
+}
+.mobile-menu.open{transform:translateX(0)}
+.mobile-menu a{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.8rem,7vw,3rem);font-weight:300;
+  color:rgba(255,255,255,.75);transition:color .25s;
+  -webkit-tap-highlight-color:transparent;
+}
+.mobile-menu a:hover{color:var(--gold-lt)}
+
+@media(min-width:860px){
+  .nav-links{display:flex}
+  .nav-book-btn{display:flex}
+  .ham{display:none}
+}
+
+/* ══════════════════════════════════════
+   HERO
+══════════════════════════════════════ */
+.hero{
+  position:relative;min-height:100vh;
+  display:flex;align-items:flex-end;overflow:hidden;
+}
+.hero-bg-img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:top center;
+  animation:zoomIn 1.4s ease forwards;
+}
+@keyframes zoomIn{from{transform:scale(1.06)}to{transform:scale(1)}}
+
+.hero-veil{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(18,10,4,.97) 0%,rgba(18,10,4,.55) 38%,rgba(18,10,4,.15) 70%,transparent 100%);
+}
+@media(min-width:700px){
+  .hero-veil{
+    background:
+      linear-gradient(100deg,rgba(18,10,4,.97) 0%,rgba(18,10,4,.7) 42%,transparent 70%),
+      linear-gradient(to top,rgba(18,10,4,.6) 0%,transparent 50%);
+  }
+}
+
+.hero-content{
+  position:relative;z-index:2;
+  padding:90px var(--pad) clamp(44px,8vw,80px);
+  max-width:min(600px,100%);
+}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(201,149,60,.12);border:1px solid rgba(201,149,60,.3);
+  border-radius:100px;padding:6px 16px;
+  font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold-lt);margin-bottom:22px;
+}
+.badge-dot{
+  width:6px;height:6px;background:var(--gold);border-radius:50%;
+  animation:blink 2s ease infinite;
+}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(1.5)}}
+
+.hero h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.5rem,8vw,4.8rem);font-weight:300;line-height:1.08;
+  margin-bottom:16px;
+}
+.hero h1 em{font-style:italic;color:var(--gold-lt);display:block}
+
+.hero p{
+  font-size:clamp(.78rem,2vw,.88rem);line-height:1.85;
+  color:rgba(255,255,255,.58);max-width:380px;margin-bottom:28px;
+}
+
+.hero-btns{display:flex;flex-wrap:wrap;gap:12px}
+
+.hero-stats{
+  display:flex;gap:clamp(20px,5vw,48px);
+  margin-top:36px;padding-top:28px;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+.stat-n{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.5rem,4vw,2.4rem);font-weight:300;
+  color:var(--gold-lt);line-height:1;
+}
+.stat-l{
+  font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,255,255,.38);margin-top:4px;
+}
+
+/* ══════════════════════════════════════
+   TICKER
+══════════════════════════════════════ */
+.ticker{background:var(--gold);overflow:hidden;padding:11px 0;white-space:nowrap}
+.ticker-track{display:inline-flex;animation:tick 22s linear infinite}
+.ticker-track span{
+  font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;
+  font-weight:700;color:var(--dark);padding:0 28px;
+}
+.ticker-track .sep{color:var(--brown);font-size:.9rem;vertical-align:middle}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ══════════════════════════════════════
+   SERVICES
+══════════════════════════════════════ */
+.services{background:var(--cream);padding:clamp(56px,10vw,120px) var(--pad)}
+
+.svc-head{
+  display:flex;flex-direction:column;gap:18px;
+  margin-bottom:clamp(36px,6vw,60px);
+}
+.svc-head-sub{font-size:.8rem;line-height:1.8;color:rgba(44,26,14,.52);max-width:280px}
+@media(min-width:600px){
+  .svc-head{flex-direction:row;justify-content:space-between;align-items:flex-end}
+}
+
+.svc-grid{display:grid;gap:18px;grid-template-columns:1fr}
+@media(min-width:520px){.svc-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:860px){.svc-grid{grid-template-columns:repeat(3,1fr)}}
+
+.svc-card{
+  position:relative;border-radius:18px;overflow:hidden;
+  aspect-ratio:3/4;cursor:pointer;-webkit-tap-highlight-color:transparent;outline:none;
+}
+@media(min-width:520px) and (max-width:859px){
+  .svc-card:last-child{grid-column:1/-1;aspect-ratio:16/10}
+}
+.svc-card img{
+  width:100%;height:100%;object-fit:cover;object-position:top;
+  transition:transform .6s cubic-bezier(.4,0,.2,1);
+}
+.svc-card:hover img,.svc-card:focus img{transform:scale(1.06)}
+.svc-veil{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(18,10,4,.97) 0%,rgba(18,10,4,.4) 55%,transparent 100%);
+}
+.svc-body{position:absolute;bottom:0;left:0;right:0;padding:24px 22px}
+.svc-n{font-size:.58rem;letter-spacing:.28em;color:var(--gold);margin-bottom:5px;font-weight:600}
+.svc-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.3rem,3vw,1.75rem);font-weight:400;color:#fff;line-height:1.15;
+}
+.svc-price{font-size:.73rem;color:var(--gold-lt);margin-top:3px}
+.svc-desc{
+  font-size:.72rem;line-height:1.7;color:rgba(255,255,255,.5);
+  margin-top:8px;max-height:0;overflow:hidden;transition:max-height .45s;
+}
+.svc-card:hover .svc-desc,.svc-card:focus .svc-desc{max-height:80px}
+.svc-book-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:14px;
+  padding:9px 20px;
+  border-radius:100px;
+  font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;
+  background:linear-gradient(135deg,var(--gold),var(--brown));
+  color:#fff;border:none;cursor:pointer;
+  box-shadow:0 4px 14px rgba(201,149,60,.35);
+  transition:transform .25s,box-shadow .25s;
+  -webkit-tap-highlight-color:transparent;
+}
+.svc-book-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,149,60,.5)}
+.svc-cta{text-align:center;margin-top:44px}
+
+/* ══════════════════════════════════════
+   GALLERY
+══════════════════════════════════════ */
+.gallery{background:var(--dark2);padding:clamp(56px,10vw,120px) var(--pad)}
+.gal-head{margin-bottom:clamp(28px,5vw,52px)}
+
+.gal-grid{display:grid;gap:10px;grid-template-columns:repeat(2,1fr)}
+@media(min-width:560px){.gal-grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:900px){
+  .gal-grid{grid-template-columns:repeat(4,1fr);grid-auto-rows:220px}
+  .gal-tall{grid-row:span 2}
+  .gal-wide{grid-column:span 2}
+}
+
+.gal-item{
+  position:relative;border-radius:12px;overflow:hidden;
+  aspect-ratio:3/4;cursor:pointer;-webkit-tap-highlight-color:transparent;
+}
+@media(min-width:900px){.gal-item,.gal-wide{aspect-ratio:unset}}
+.gal-item img{
+  width:100%;height:100%;object-fit:cover;object-position:top;
+  transition:transform .6s cubic-bezier(.4,0,.2,1);
+}
+.gal-item:hover img{transform:scale(1.07)}
+.gal-veil{
+  position:absolute;inset:0;background:rgba(18,10,4,0);
+  display:flex;align-items:center;justify-content:center;transition:background .35s;
+}
+.gal-item:hover .gal-veil{background:rgba(18,10,4,.45)}
+.gal-plus{
+  font-family:'Cormorant Garamond',serif;font-size:2.4rem;
+  color:var(--gold-lt);opacity:0;transform:scale(.7);
+  transition:opacity .35s,transform .35s;
+}
+.gal-item:hover .gal-plus{opacity:1;transform:scale(1)}
+
+/* ══════════════════════════════════════
+   CTA BANNER
+══════════════════════════════════════ */
+.cta-section{background:var(--dark2);padding:0 var(--pad) clamp(56px,10vw,100px)}
+.cta-box{
+  position:relative;overflow:hidden;border-radius:22px;
+  background:linear-gradient(135deg,var(--dark3) 0%,var(--brown-dk) 100%);
+  padding:clamp(36px,7vw,68px) clamp(24px,6vw,68px);
+  display:flex;flex-direction:column;gap:24px;
+}
+@media(min-width:680px){
+  .cta-box{flex-direction:row;align-items:center;justify-content:space-between}
+}
+.cta-box::before{
+  content:'';position:absolute;top:-80px;right:-80px;
+  width:360px;height:360px;border-radius:50%;
+  background:radial-gradient(circle,rgba(201,149,60,.15) 0%,transparent 70%);
+  pointer-events:none;
+}
+.cta-box h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.7rem,5vw,3rem);font-weight:300;line-height:1.15;
+  position:relative;z-index:1;
+}
+.cta-box h2 em{font-style:italic;color:var(--gold-lt)}
+.cta-box p{font-size:.8rem;color:rgba(255,255,255,.5);line-height:1.8;margin-top:10px;max-width:340px}
+.cta-actions{flex-shrink:0;position:relative;z-index:1}
+
+/* ══════════════════════════════════════
+   TESTIMONIALS
+══════════════════════════════════════ */
+.testimonials{background:var(--dark);padding:clamp(56px,10vw,120px) var(--pad)}
+.test-head{margin-bottom:clamp(28px,5vw,52px)}
+
+.test-wrap{position:relative;overflow:hidden}
+.test-track{display:flex;gap:18px;transition:transform .55s cubic-bezier(.4,0,.2,1)}
+
+.t-card{
+  flex:0 0 100%;
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+  border-radius:18px;padding:clamp(22px,5vw,38px);position:relative;
+}
+@media(min-width:680px){.t-card{flex:0 0 calc(50% - 9px)}}
+
+.t-quote{
+  font-family:'Cormorant Garamond',serif;font-size:5rem;
+  color:var(--gold);opacity:.12;position:absolute;top:8px;left:18px;
+  line-height:1;pointer-events:none;
+}
+.t-stars{color:var(--gold);font-size:.78rem;letter-spacing:3px;margin-bottom:14px}
+.t-text{font-size:.82rem;line-height:1.9;color:rgba(255,255,255,.66);margin-bottom:22px;position:relative;z-index:1}
+.t-author{display:flex;align-items:center;gap:12px}
+.t-img{
+  width:42px;height:42px;border-radius:50%;
+  object-fit:cover;object-position:top;border:2px solid var(--gold);flex-shrink:0;
+}
+.t-name{font-size:.76rem;font-weight:600;color:var(--gold-lt)}
+.t-role{font-size:.6rem;color:rgba(255,255,255,.36);letter-spacing:.14em;text-transform:uppercase;margin-top:2px}
+
+.test-controls{display:flex;gap:10px;margin-top:28px}
+.t-btn{
+  width:42px;height:42px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.15);background:transparent;
+  color:#fff;font-size:.95rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:border-color .25s,background .25s,color .25s;
+  -webkit-tap-highlight-color:transparent;
+}
+.t-btn:hover,.t-btn.lit{border-color:var(--gold);background:rgba(201,149,60,.1);color:var(--gold)}
+
+/* ══════════════════════════════════════
+   CONTACT
+══════════════════════════════════════ */
+.contact{
+  background:linear-gradient(160deg,var(--dark3) 0%,var(--dark) 100%);
+  padding:clamp(56px,10vw,120px) var(--pad);
+}
+.contact-grid{display:grid;grid-template-columns:1fr;gap:clamp(40px,7vw,80px)}
+@media(min-width:780px){.contact-grid{grid-template-columns:1fr 1fr}}
+
+.contact-info{display:flex;flex-direction:column;gap:14px;margin-top:28px}
+.c-row{display:flex;align-items:center;gap:12px;font-size:.8rem;color:rgba(255,255,255,.6)}
+.c-ico{
+  width:34px;height:34px;border-radius:50%;
+  border:1px solid rgba(201,149,60,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.78rem;color:var(--gold);flex-shrink:0;
+}
+
+.contact-form{display:flex;flex-direction:column;gap:16px}
+.field label{
+  display:block;font-size:.56rem;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:6px;font-weight:600;
+}
+.field input,.field textarea,.field select{
+  width:100%;background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);border-radius:12px;
+  padding:13px 16px;color:#fff;
+  font-family:'DM Sans',sans-serif;font-size:.83rem;
+  outline:none;transition:border-color .25s,background .25s;
+  -webkit-appearance:none;appearance:none;
+}
+.field select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C9953C' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;
+  padding-right:38px;cursor:pointer;
+}
+.field select option{background:var(--dark3);color:#fff}
+.field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,.22)}
+.field input:focus,.field textarea:focus,.field select:focus{
+  border-color:var(--gold);background:rgba(201,149,60,.05);
+}
+.field textarea{resize:none;height:115px}
+
+/* ══════════════════════════════════════
+   POLICIES
+══════════════════════════════════════ */
+.policies{background:var(--cream);padding:clamp(56px,10vw,100px) var(--pad)}
+.pol-inner{
+  display:grid;grid-template-columns:1fr;gap:36px;
+  background:#fff;border-radius:22px;
+  padding:clamp(26px,6vw,52px);
+  box-shadow:0 16px 56px rgba(44,26,14,.08);
+}
+@media(min-width:660px){.pol-inner{grid-template-columns:1fr 1.4fr;gap:52px}}
+
+.pol-img{border-radius:16px;overflow:hidden;aspect-ratio:4/5}
+.pol-img img{width:100%;height:100%;object-fit:cover;object-position:top}
+.pol-list{display:flex;flex-direction:column;gap:13px;margin:22px 0 30px}
+.pol-item{display:flex;align-items:flex-start;gap:11px;font-size:.8rem;color:rgba(44,26,14,.68);line-height:1.6}
+.pol-check{
+  width:18px;height:18px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--brown));
+  display:flex;align-items:center;justify-content:center;
+  font-size:.52rem;color:#fff;flex-shrink:0;margin-top:2px;
+}
+
+/* ══════════════════════════════════════
+   FOOTER
+══════════════════════════════════════ */
+footer{
+  background:var(--dark3);
+  padding:clamp(44px,8vw,80px) var(--pad) clamp(22px,4vw,38px);
+  border-top:1px solid rgba(201,149,60,.1);
+}
+.foot-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:36px 20px;margin-bottom:44px;
+}
+@media(min-width:660px){.foot-grid{grid-template-columns:1.5fr repeat(3,1fr)}}
+.foot-brand{grid-column:1/-1}
+@media(min-width:660px){.foot-brand{grid-column:auto}}
+
+.foot-logo{
+  font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;
+  letter-spacing:.14em;color:var(--gold-lt);display:block;margin-bottom:12px;
+}
+.foot-logo em{font-style:italic;color:var(--gold)}
+.foot-desc{font-size:.76rem;line-height:1.85;color:rgba(255,255,255,.36);max-width:220px;margin-bottom:22px}
+
+.newsletter{
+  display:flex;border-radius:100px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.1);
+}
+.newsletter input{
+  flex:1;min-width:0;background:transparent;border:none;
+  padding:9px 14px;color:#fff;font-family:'DM Sans',sans-serif;
+  font-size:.73rem;outline:none;
+}
+.newsletter input::placeholder{color:rgba(255,255,255,.25)}
+.newsletter button{
+  background:var(--gold);border:none;padding:9px 16px;
+  font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:700;color:var(--dark);cursor:pointer;
+  font-family:'DM Sans',sans-serif;white-space:nowrap;transition:background .25s;
+}
+.newsletter button:hover{background:var(--gold-lt)}
+
+.foot-col h4{
+  font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold);font-weight:600;margin-bottom:14px;
+}
+.foot-col ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.foot-col ul a{font-size:.76rem;color:rgba(255,255,255,.38);transition:color .25s}
+.foot-col ul a:hover{color:var(--gold-lt)}
+
+.foot-bottom{
+  display:flex;flex-direction:column;gap:14px;
+  padding-top:28px;border-top:1px solid rgba(255,255,255,.06);
+}
+@media(min-width:560px){.foot-bottom{flex-direction:row;justify-content:space-between;align-items:center}}
+.foot-copy{font-size:.62rem;color:rgba(255,255,255,.23)}
+
+.socials{display:flex;gap:8px}
+.soc-btn{
+  width:32px;height:32px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.68rem;color:rgba(255,255,255,.42);
+  transition:border-color .25s,color .25s;-webkit-tap-highlight-color:transparent;
+}
+.soc-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ══════════════════════════════════════
+   GALLERY LIGHTBOX
+══════════════════════════════════════ */
+.lightbox{
+  position:fixed;inset:0;z-index:300;
+  background:rgba(0,0,0,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .35s;padding:20px;
+}
+.lightbox.open{opacity:1;pointer-events:all}
+.lb-img{
+  max-width:min(88vw,560px);max-height:86vh;
+  border-radius:14px;object-fit:contain;
+  transform:scale(.92);transition:transform .4s cubic-bezier(.4,0,.2,1);
+}
+.lightbox.open .lb-img{transform:scale(1)}
+.lb-close{
+  position:absolute;top:18px;right:22px;
+  font-size:1.5rem;color:rgba(255,255,255,.5);
+  cursor:pointer;line-height:1;transition:color .25s;
+  background:none;border:none;-webkit-tap-highlight-color:transparent;
+}
+.lb-close:hover{color:var(--gold)}
+
+/* ══════════════════════════════════════
+   BOOKING MODAL
+══════════════════════════════════════ */
+.bm-overlay{
+  position:fixed;inset:0;z-index:400;
+  display:flex;align-items:center;justify-content:center;
+  padding:16px;
+  background:rgba(8,4,2,.88);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  opacity:0;pointer-events:none;
+  transition:opacity .35s ease;
+}
+.bm-overlay.open{opacity:1;pointer-events:all}
+
+.bm-panel{
+  position:relative;width:100%;max-width:840px;
+  height:min(88vh,680px);
+  background:var(--dark2);
+  border-radius:24px;
+  border:1px solid rgba(201,149,60,.2);
+  box-shadow:0 32px 80px rgba(0,0,0,.7);
+  display:flex;flex-direction:column;overflow:hidden;
+  transform:translateY(28px) scale(.97);
+  transition:transform .4s cubic-bezier(.4,0,.2,1);
+}
+.bm-overlay.open .bm-panel{transform:translateY(0) scale(1)}
+
+.bm-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 22px;
+  border-bottom:1px solid rgba(201,149,60,.12);
+  flex-shrink:0;gap:12px;
+  background:rgba(18,10,4,.5);
+}
+.bm-header-left{display:flex;align-items:center;gap:10px}
+.bm-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--gold);
+  animation:blink 2s ease infinite;
+}
+.bm-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(.95rem,2.5vw,1.2rem);font-weight:300;
+  letter-spacing:.08em;color:var(--gold-lt);
+}
+.bm-svc-tag{
+  font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);background:rgba(201,149,60,.1);
+  border:1px solid rgba(201,149,60,.2);border-radius:100px;
+  padding:4px 12px;white-space:nowrap;
+  max-width:180px;overflow:hidden;text-overflow:ellipsis;
+}
+.bm-close-btn{
+  width:32px;height:32px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.15);background:transparent;
+  color:rgba(255,255,255,.5);font-size:.9rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .25s;flex-shrink:0;
+  -webkit-tap-highlight-color:transparent;
+}
+.bm-close-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,149,60,.08)}
+
+.bm-body{flex:1;position:relative;overflow:hidden}
+.bm-body iframe{width:100%;height:100%;border:none;display:block}
+
+.bm-loader{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  background:var(--dark2);transition:opacity .4s;
+}
+.bm-loader.gone{opacity:0;pointer-events:none}
+.bm-spinner{
+  width:36px;height:36px;border-radius:50%;
+  border:2px solid rgba(201,149,60,.15);border-top-color:var(--gold);
+  animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.bm-loader p{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.32)}
+
+.bm-foot{
+  padding:10px 22px;border-top:1px solid rgba(201,149,60,.08);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  flex-shrink:0;background:rgba(18,10,4,.3);
+}
+.bm-foot p{font-size:.56rem;letter-spacing:.1em;color:rgba(255,255,255,.2);text-align:center}
+.bm-foot span{color:var(--gold);font-size:.6rem}
+
+</style>
+</head>
+<body>
+
+<!-- ══ GALLERY LIGHTBOX ══ -->
+<div class="lightbox" id="lb">
+  <button class="lb-close" id="lbClose">✕</button>
+  <img class="lb-img" id="lbImg" src="" alt="">
+</div>
+
+<!-- ══ BOOKING MODAL ══ -->
+<div class="bm-overlay" id="bmOverlay" role="dialog" aria-modal="true" aria-label="Book an appointment">
+  <div class="bm-panel">
+    <div class="bm-header">
+      <div class="bm-header-left">
+        <div class="bm-dot"></div>
+        <span class="bm-title">Flawless<em style="font-style:italic;color:var(--gold)">Wig</em> Studio</span>
+      </div>
+      <span class="bm-svc-tag" id="bmSvcTag">Book Appointment</span>
+      <button class="bm-close-btn" id="bmCloseBtn" aria-label="Close">✕</button>
+    </div>
+    <div class="bm-body">
+      <div class="bm-loader" id="bmLoader">
+        <div class="bm-spinner"></div>
+        <p>Loading your booking...</p>
+      </div>
+      <iframe id="bmIframe" src="" title="Book an appointment" allow="payment"></iframe>
+    </div>
+    <div class="bm-foot">
+      <span>✦</span>
+      <p>Secured booking &nbsp;·&nbsp; $25 deposit required to confirm &nbsp;·&nbsp; Powered by Acuity Scheduling</p>
+      <span>✦</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MOBILE MENU ══ -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#services" class="mm-link">Services</a>
+  <a href="#gallery" class="mm-link">Gallery</a>
+  <a href="#testimonials" class="mm-link">Reviews</a>
+  <a href="#contact" class="mm-link">Contact</a>
+  <button class="btn btn-gold mm-link book-btn" data-service="General Booking">Book Now</button>
+</div>
+
+<!-- ══ NAV ══ -->
+<nav id="nav">
+  <div class="nav-logo">Flawless<em>Wig</em> Studio</div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="btn btn-gold nav-book-btn book-btn" data-service="General Booking" style="padding:10px 22px;font-size:.6rem;">Book Now</button>
+  <div class="ham" id="ham"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <img class="hero-bg-img" src="img4.jpeg" alt="Flawless wig install">
+  <div class="hero-veil"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="badge-dot"></span>Premium Wig Studio</div>
+    <h1>Flawless Wig Installs<em>Laid to Perfection</em></h1>
+    <p>Custom wig installs, seamless lace melts, and secure natural finishes. Every client leaves looking and feeling their absolute best.</p>
+    <div class="hero-btns">
+      <button class="btn btn-gold book-btn" data-service="General Booking">Book Now</button>
+      <a href="#gallery" class="btn btn-outline">View Gallery</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-n">500+</div><div class="stat-l">Happy Clients</div></div>
+      <div><div class="stat-n">5★</div><div class="stat-l">Avg. Rating</div></div>
+      <div><div class="stat-n">4 Yrs</div><div class="stat-l">Experience</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TICKER ══ -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>Frontal Wig Install</span><span class="sep">✦</span>
+    <span>Lace Melt</span><span class="sep">✦</span>
+    <span>Closure Install</span><span class="sep">✦</span>
+    <span>Wig Revamp</span><span class="sep">✦</span>
+    <span>Custom Styling</span><span class="sep">✦</span>
+    <span>Body Wave</span><span class="sep">✦</span>
+    <span>Silk Press</span><span class="sep">✦</span>
+    <span>Frontal Wig Install</span><span class="sep">✦</span>
+    <span>Lace Melt</span><span class="sep">✦</span>
+    <span>Closure Install</span><span class="sep">✦</span>
+    <span>Wig Revamp</span><span class="sep">✦</span>
+    <span>Custom Styling</span><span class="sep">✦</span>
+    <span>Body Wave</span><span class="sep">✦</span>
+    <span>Silk Press</span><span class="sep">✦</span>
+  </div>
+</div>
+
+<!-- ══ SERVICES ══ -->
+<section class="services" id="services">
+  <div class="svc-head">
+    <div>
+      <div class="tag">What We Offer</div>
+      <h2 class="display on-light">Wig &amp; Install<br><em>Services</em></h2>
+    </div>
+    <p class="svc-head-sub">From seamless lace melts to full wig revamps — every service tailored perfectly to you.</p>
+  </div>
+  <div class="svc-grid">
+    <div class="svc-card book-btn" tabindex="0" data-service="Frontal Wig Install">
+      <img src="img1.jpeg" alt="Frontal Wig Install">
+      <div class="svc-veil"></div>
+      <div class="svc-body">
+        <div class="svc-n">01</div>
+        <div class="svc-title">Frontal Wig Install</div>
+        <div class="svc-price">Starting at $170</div>
+        <p class="svc-desc">Full frontal lace wig install with seamless blending and a natural-looking hairline.</p>
+        <button class="svc-book-btn" onclick="event.stopPropagation();openBooking('Frontal Wig Install')">Book Now ↗</button>
+      </div>
+    </div>
+    <div class="svc-card book-btn" tabindex="0" data-service="Closure Install">
+      <img src="img6.jpeg" alt="Closure Install">
+      <div class="svc-veil"></div>
+      <div class="svc-body">
+        <div class="svc-n">02</div>
+        <div class="svc-title">Closure Install</div>
+        <div class="svc-price">Starting at $150</div>
+        <p class="svc-desc">Precision closure installation for a flawless, natural-looking part every time.</p>
+        <button class="svc-book-btn" onclick="event.stopPropagation();openBooking('Closure Install')">Book Now ↗</button>
+      </div>
+    </div>
+    <div class="svc-card book-btn" tabindex="0" data-service="Wig Revamp" style="aspect-ratio:unset;min-height:520px;">
+      <img src="img7.jpeg" alt="Wig Revamp">
+      <div class="svc-veil"></div>
+      <div class="svc-body">
+        <div class="svc-n">03</div>
+        <div class="svc-title">Wig Revamp</div>
+        <div class="svc-price">Starting at $190</div>
+        <p class="svc-desc">Full restoration and restyling of your existing wig — like brand new.</p>
+        <button class="svc-book-btn" onclick="event.stopPropagation();openBooking('Wig Revamp')">Book Now ↗</button>
+      </div>
+    </div>
+  </div>
+  <div class="svc-cta">
+    <button class="btn btn-gold book-btn" data-service="General Booking">Book a Service</button>
+  </div>
+</section>
+
+<!-- ══ GALLERY ══ -->
+<section class="gallery" id="gallery">
+  <div class="gal-head">
+    <div class="tag">Portfolio</div>
+    <h2 class="display">Our<br><em>Gallery</em></h2>
+  </div>
+  <div class="gal-grid">
+    <div class="gal-item gal-tall" data-src="img2.jpeg"><img src="img2.jpeg" alt="Gallery 1"><div class="gal-veil"><span class="gal-plus">+</span></div></div>
+    <div class="gal-item" data-src="img3.jpeg"><img src="img3.jpeg" alt="Gallery 2"><div class="gal-veil"><span class="gal-plus">+</span></div></div>
+    <div class="gal-item" data-src="img5.jpeg"><img src="img5.jpeg" alt="Gallery 3"><div class="gal-veil"><span class="gal-plus">+</span></div></div>
+    <div class="gal-item gal-tall" data-src="img8.jpeg"><img src="img8.jpeg" alt="Gallery 4"><div class="gal-veil"><span class="gal-plus">+</span></div></div>
+    <div class="gal-item" data-src="img9.jpeg"><img src="img9.jpeg" alt="Gallery 5"><div class="gal-veil"><span class="gal-plus">+</span></div></div>
+    <div class="gal-item" data-src="img10.jpeg"><img src="img10.jpeg" alt="Gallery 6"><div class="gal-veil"><span class="gal-plus">+</span></div></div>
+    <div class="gal-item gal-wide" data-src="img1.jpeg"><img src="img1.jpeg" alt="Gallery 7" style="object-position:top center"><div class="gal-veil"><span class="gal-plus">+</span></div></div>
+  </div>
+</section>
+
+<!-- ══ CTA BANNER ══ -->
+<div class="cta-section">
+  <div class="cta-box">
+    <div>
+      <h2>Let's Get You<br><em>Booked!</em></h2>
+      <p>Secure your appointment today and experience seamless lace and long-lasting results.</p>
+    </div>
+    <div class="cta-actions">
+      <button class="btn btn-gold book-btn" data-service="General Booking" style="padding:16px 38px;">Book Appointment</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TESTIMONIALS ══ -->
+<section class="testimonials" id="testimonials">
+  <div class="test-head">
+    <div class="tag">Client Love</div>
+    <h2 class="display">What Our<br><em>Clients Say</em></h2>
+  </div>
+  <div class="test-wrap">
+    <div class="test-track" id="tTrack">
+      <div class="t-card">
+        <div class="t-quote">"</div>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"I've had my fair share of wig installs, but this experience was on a completely different level. My lace was perfectly melted — the hairline looked completely natural, and the fit was so secure yet comfortable."</p>
+        <div class="t-author"><img class="t-img" src="img8.jpeg" alt="Sarah M"><div><div class="t-name">Sarah M.</div><div class="t-role">Custom Wig Styling</div></div></div>
+      </div>
+      <div class="t-card">
+        <div class="t-quote">"</div>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"Best wig install I've ever had! She literally transformed my whole look. The lace was undetectable and everyone thought it was my real hair. I've already booked my next appointment!"</p>
+        <div class="t-author"><img class="t-img" src="img3.jpeg" alt="Jasmine T"><div><div class="t-name">Jasmine T.</div><div class="t-role">Frontal Install</div></div></div>
+      </div>
+      <div class="t-card">
+        <div class="t-quote">"</div>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"I came in for a wig revamp and left looking like a whole new woman. She breathed new life into my old wig — styled it, cut it, and installed it flawlessly. The attention to detail is unmatched."</p>
+        <div class="t-author"><img class="t-img" src="img5.jpeg" alt="Destiny R"><div><div class="t-name">Destiny R.</div><div class="t-role">Wig Revamp</div></div></div>
+      </div>
+      <div class="t-card">
+        <div class="t-quote">"</div>
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"She did my closure install and I am OBSESSED. My lace laid so naturally, I almost cried. The vibe in the studio is so welcoming and she really takes her time to make sure everything is perfect. 10/10!"</p>
+        <div class="t-author"><img class="t-img" src="img2.jpeg" alt="Kezia B"><div><div class="t-name">Kezia B.</div><div class="t-role">Closure Install</div></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="test-controls">
+    <button class="t-btn" id="tPrev">←</button>
+    <button class="t-btn lit" id="tNext">→</button>
+  </div>
+</section>
+
+<!-- ══ CONTACT ══ -->
+<section class="contact" id="contact">
+  <div class="contact-grid">
+    <div>
+      <div class="tag">Get In Touch</div>
+      <h2 class="display">Contact<br><em>Us</em></h2>
+      <p style="font-size:.8rem;line-height:1.85;color:rgba(255,255,255,.48);margin-top:14px;">Ready for your next flawless install? Fill out the form and we'll confirm your appointment.</p>
+      <div class="contact-info">
+        <div class="c-row"><div class="c-ico">✉</div><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c4adaaa2ab84a2a8a5b3a8a1b7b7b3ada3b7b0b1a0adabeaa7aba9">[email&#160;protected]</a></div>
+        <div class="c-row"><div class="c-ico">☎</div>(877) 297-5454</div>
+        <div class="c-row"><div class="c-ico">📍</div>6391 Elgin Celina, Delaware</div>
+      </div>
+    </div>
+    <div class="contact-form">
+      <div class="field"><label>Your Name</label><input type="text" placeholder="e.g. Jasmine Smith" autocomplete="name"></div>
+      <div class="field"><label>Email</label><input type="email" placeholder="you@email.com" autocomplete="email"></div>
+      <div class="field">
+        <label>Service</label>
+        <select>
+          <option value="" disabled selected>Select a service</option>
+          <option>Frontal Wig Install — $170</option>
+          <option>Closure Install — $150</option>
+          <option>Wig Revamp — $190</option>
+          <option>Custom Styling</option>
+        </select>
+      </div>
+      <div class="field"><label>Message</label><textarea placeholder="Tell us about the look you want..."></textarea></div>
+      <button class="btn btn-gold" style="align-self:flex-start;">Send Message</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ POLICIES ══ -->
+<section class="policies" id="policies">
+  <div class="pol-inner">
+    <div class="pol-img"><img src="img9.jpeg" alt="Studio policies"></div>
+    <div>
+      <div class="tag" style="color:var(--brown)">Before You Come In</div>
+      <h2 class="display on-light">Quick<br><em>Policies</em></h2>
+      <div class="pol-list">
+        <div class="pol-item"><div class="pol-check">✓</div>$25 deposit required to confirm — non-refundable</div>
+        <div class="pol-item"><div class="pol-check">✓</div>Cancel or reschedule at least 24 hours in advance</div>
+        <div class="pol-item"><div class="pol-check">✓</div>10 minute grace period — late arrivals may be cancelled</div>
+        <div class="pol-item"><div class="pol-check">✓</div>Please arrive with inspiration photos ready</div>
+        <div class="pol-item"><div class="pol-check">✓</div>No extra guests unless previously approved</div>
+      </div>
+      <button class="btn btn-gold book-btn" data-service="General Booking">Book Now</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <span class="foot-logo">Flawless<em>Wig</em> Studio</span>
+      <p class="foot-desc">Book your flawless install today and step out with confidence. Where Beauty Meets Precision.</p>
+      <div class="newsletter">
+        <input type="email" placeholder="Your email address...">
+        <button>Subscribe</button>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h4>Pages</h4>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Info</h4>
+      <ul>
+        <li><a href="#">Terms &amp; Conditions</a></li>
+        <li><a href="#">Payment Methods</a></li>
+        <li><a href="#">Shipping</a></li>
+        <li><a href="#">Returns</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Social</h4>
+      <ul>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Twitter</a></li>
+        <li><a href="#">Facebook</a></li>
+        <li><a href="#">YouTube</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span class="foot-copy">© 2026 Flawless Wig Studio. All rights reserved.</span>
+    <div class="socials">
+      <a href="#" class="soc-btn">ig</a>
+      <a href="#" class="soc-btn">tw</a>
+      <a href="#" class="soc-btn">fb</a>
+      <a href="#" class="soc-btn">yt</a>
+    </div>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ══ NAV ══ */
+const nav  = document.getElementById('nav');
+const ham  = document.getElementById('ham');
+const menu = document.getElementById('mobileMenu');
+
+window.addEventListener('scroll', () => nav.classList.toggle('solid', window.scrollY > 50));
+
+ham.addEventListener('click', () => {
+  ham.classList.toggle('open');
+  menu.classList.toggle('open');
+  document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+});
+document.querySelectorAll('.mm-link').forEach(a => {
+  a.addEventListener('click', () => {
+    ham.classList.remove('open');
+    menu.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+});
+
+/* ══ TESTIMONIAL SLIDER ══ */
+const track = document.getElementById('tTrack');
+let cur = 0;
+function getVis() { return window.innerWidth >= 680 ? 2 : 1; }
+function slideTo(n) {
+  const cards = track.children;
+  const max = cards.length - getVis();
+  cur = Math.max(0, Math.min(n, max));
+  track.style.transform = `translateX(-${cur * (cards[0].offsetWidth + 18)}px)`;
+  document.getElementById('tPrev').classList.toggle('lit', cur === 0);
+  document.getElementById('tNext').classList.toggle('lit', cur < max);
+}
+document.getElementById('tNext').addEventListener('click', () => slideTo(cur + 1));
+document.getElementById('tPrev').addEventListener('click', () => slideTo(cur - 1));
+window.addEventListener('resize', () => slideTo(0));
+let ts = 0;
+track.addEventListener('touchstart', e => { ts = e.touches[0].clientX; }, { passive: true });
+track.addEventListener('touchend', e => {
+  const dx = ts - e.changedTouches[0].clientX;
+  if (Math.abs(dx) > 40) slideTo(dx > 0 ? cur + 1 : cur - 1);
+});
+
+/* ══ GALLERY LIGHTBOX ══ */
+const lb    = document.getElementById('lb');
+const lbImg = document.getElementById('lbImg');
+document.querySelectorAll('.gal-item').forEach(item => {
+  item.addEventListener('click', () => {
+    lbImg.src = item.dataset.src;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+});
+function closeLb() { lb.classList.remove('open'); document.body.style.overflow = ''; }
+document.getElementById('lbClose').addEventListener('click', closeLb);
+lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+
+/* ══ BOOKING MODAL ══ */
+// ✏️ SWAP THIS LINE with your real Acuity URL when your subscription is back:
+// e.g. const ACUITY = 'https://yourname.acuityscheduling.com/schedule.php';
+const ACUITY = 'https://acuityscheduling.com/schedule.php?owner=33887867';
+
+const bmOverlay = document.getElementById('bmOverlay');
+const bmIframe  = document.getElementById('bmIframe');
+const bmLoader  = document.getElementById('bmLoader');
+const bmSvcTag  = document.getElementById('bmSvcTag');
+
+function openBooking(service) {
+  // Update service label in header
+  bmSvcTag.textContent = service || 'Book Appointment';
+
+  // Build URL — passes service name so Acuity can pre-select it
+  const url = (service && service !== 'General Booking')
+    ? `${ACUITY}&appointmentType=${encodeURIComponent(service)}`
+    : ACUITY;
+
+  // Reset iframe + show loader
+  bmIframe.src = '';
+  bmLoader.classList.remove('gone');
+  bmIframe.onload = () => bmLoader.classList.add('gone');
+
+  // Open overlay first, then set src so animation plays
+  bmOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => { bmIframe.src = url; }, 50);
+}
+
+function closeBooking() {
+  bmOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+  setTimeout(() => { bmIframe.src = ''; }, 400);
+}
+
+// Wire up every Book Now button
+document.querySelectorAll('.book-btn').forEach(el => {
+  el.addEventListener('click', () => {
+    // Close mobile nav if open
+    ham.classList.remove('open');
+    menu.classList.remove('open');
+    openBooking(el.dataset.service || 'General Booking');
+  });
+});
+
+// Wire up service cards (click anywhere on card)
+document.querySelectorAll('.svc-card').forEach(card => {
+  card.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') openBooking(card.dataset.service);
+  });
+});
+
+document.getElementById('bmCloseBtn').addEventListener('click', closeBooking);
+bmOverlay.addEventListener('click', e => { if (e.target === bmOverlay) closeBooking(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeBooking();
+    closeLb();
+  }
+});
+
+/* ══ CUSTOM CURSOR (desktop only) ══ */
+if (window.matchMedia('(pointer:fine)').matches) {
+  const dot  = document.createElement('div');
+  const ring = document.createElement('div');
+  Object.assign(dot.style, {
+    position:'fixed',width:'10px',height:'10px',background:'var(--gold)',
+    borderRadius:'50%',pointerEvents:'none',zIndex:'9999',
+    transform:'translate(-50%,-50%)',transition:'transform .1s',
+  });
+  Object.assign(ring.style, {
+    position:'fixed',width:'32px',height:'32px',
+    border:'1px solid rgba(201,149,60,.5)',borderRadius:'50%',
+    pointerEvents:'none',zIndex:'9998',transform:'translate(-50%,-50%)',
+    transition:'all .15s ease',
+  });
+  document.body.append(dot, ring);
+  let rx=0,ry=0,mx=0,my=0;
+  document.addEventListener('mousemove', e => {
+    mx=e.clientX; my=e.clientY;
+    dot.style.left=mx+'px'; dot.style.top=my+'px';
+  });
+  (function a(){
+    rx+=(mx-rx)*.13; ry+=(my-ry)*.13;
+    ring.style.left=rx+'px'; ring.style.top=ry+'px';
+    requestAnimationFrame(a);
+  })();
+  document.querySelectorAll('a,button,.svc-card,.gal-item').forEach(el => {
+    el.addEventListener('mouseenter', () => { dot.st
